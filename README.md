@@ -2,7 +2,11 @@
 
 IKBD routines for keyboard and joystick handling, for use with GFA Basic on the Atari ST. Aimed at game development. 
 
-See [demo/IKBD4GFA.LST] for GFA Basic code that demos the use of the routines.
+You can check out the assembly source in the `src` directory for usage details.
+
+## Demo code
+
+The `demo` directory contains demo code for GFA Basic, showing the use of the routines.
 
 The GFA source is present as a `.LST` file because it is in ASCII format while `.GFA` files are token-based, which makes diffs and merges practically impossible.
 
