@@ -4,6 +4,8 @@ IKBD routines for keyboard and joystick handling, for use with GFA Basic on the 
 
 You can check out the assembly source in the `src` directory for usage details.
 
+The source is written using Devpac 3.
+
 ## Demo code
 
 The `demo` directory contains demo code for GFA Basic, showing the use of the routines.
