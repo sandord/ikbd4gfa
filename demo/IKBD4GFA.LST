@@ -1,0 +1,87 @@
+' IKBD4GFA.INL
+INLINE ikbd%,934
+'
+DIM reg%(15)
+'
+init_ikbd
+' disable_mouse
+'
+ON ERROR GOSUB error_restore
+scancode_tbl%=@get_scancode_state_table
+ascii_tbl%=@get_ascii_state_table
+'
+exit%=0
+WHILE exit%=0
+  VSYNC
+  VSYNC
+  VSYNC
+  '
+  scancode%=@get_last_scancode
+  joy%=@get_joystick_states
+  interrogate_joysticks
+  '
+  ' To print scancode state table:
+  ' a$=""
+  '  FOR i%=0 TO 127
+  '  a$=a$+CHR$(ASC("0")+PEEK(scancode_tbl%+i%))
+  ' NEXT i%
+  ' PRINT AT(1,1);a$
+  '
+  ' To print ASCII state table:
+  ' b$=""
+  ' FOR i%=0 TO 255
+  ' b$=b$+CHR$(ASC("0")+PEEK(ascii_tbl%+i%))
+  ' NEXT i%
+  ' PRINT AT(1,5);b$
+  '
+  ' To print joystick state:
+  PRINT "JOY -> ";joy%
+  '
+  ' To print last scancode:
+  PRINT "SCN -> ";scancode%
+  '
+  IF PEEK(scancode_tbl%+68)=1 THEN
+    exit%=1
+  ENDIF
+WEND
+'
+' enable_mouse
+restore_ikbd
+'
+PROCEDURE init_ikbd
+  ~XBIOS(38,L:ikbd%+&H1C) !init
+RETURN
+PROCEDURE restore_ikbd
+  ~XBIOS(38,L:ikbd%+&H20) !restore
+RETURN
+PROCEDURE disable_mouse
+  ~XBIOS(38,L:ikbd%+&H24) !disable_mouse
+RETURN
+PROCEDURE enable_mouse
+  ~XBIOS(38,L:ikbd%+&H28) !enable_mouse
+RETURN
+FUNCTION get_last_scancode
+  RCALL ikbd%+&H34,reg%()
+  RETURN reg%(0) !d0
+ENDFUNC
+PROCEDURE interrogate_joysticks
+  ~XBIOS(38,L:ikbd%+&H3C) !interrogate_joysticks
+RETURN
+FUNCTION get_joystick_states
+  RCALL ikbd%+&H38,reg%() !get_joystick_states
+  RETURN reg%(0) !d0
+ENDFUNC
+FUNCTION get_scancode_state_table
+  RCALL ikbd%+&H2C,reg%() !get_scancode_state_tbl
+  RETURN reg%(8) !a0
+ENDFUNC
+FUNCTION get_ascii_state_table
+  RCALL ikbd%+&H30,reg%() !get_ascii_state_tbl
+  RETURN reg%(8) !a0
+ENDFUNC
+PROCEDURE error_restore
+  PRINT "ERROR ";ERR
+  PRINT ERR$(ERR)
+  restore_ikbd
+  END
+RETURN
