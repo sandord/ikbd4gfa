@@ -187,12 +187,12 @@ restore:
 ; This routine must be called in supervisor mode.
 ;-----------------------------------------------------------------------------
 disable_mouse:
-	move.l	d0,-(sp)			; Save register.
+	move.l	d0,-(sp)		; Save register.
 
-	move.b	#IKBD_CMD_DISABLE_MOUSE,d0	; Disable all mouse packet reporting.
+	move.b	#IKBD_CMD_DISABLE_MOUSE,d0 ; Disable all mouse packet reporting.
 	bsr.s	send_command
 
-	move.l	(sp)+,d0			; Restore register.
+	move.l	(sp)+,d0		; Restore register.
 
 	rts
 
@@ -202,12 +202,12 @@ disable_mouse:
 ; This routine must be called in supervisor mode.
 ;-----------------------------------------------------------------------------
 enable_mouse:
-	move.l	d0,-(sp)			; Save register.
+	move.l	d0,-(sp)		; Save register.
 
-	move.b	#IKBD_CMD_ENABLE_MOUSE,d0	; Enable mouse packet reporting.
+	move.b	#IKBD_CMD_ENABLE_MOUSE,d0 ; Enable mouse packet reporting.
 	bsr.s	send_command
 
-	move.l	(sp)+,d0			; Restore register.
+	move.l	(sp)+,d0		; Restore register.
 
 	rts
 
