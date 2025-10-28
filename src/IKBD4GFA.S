@@ -1,8 +1,8 @@
 ;*****************************************************************************
-;* IKBD4GFA: IKBD routines for use in GFA basic.
-;* Handles keypresses and joystick state changes.
-;* License: Creative Commons Zero v1.0 Universal.
-;* Author: Sandor Drie‰nhuizen.
+; IKBD4GFA: IKBD routines for use in GFA basic.
+; Handles keypresses and joystick state changes.
+; License: Creative Commons Zero v1.0 Universal.
+; Author: Sandor Drie‰nhuizen.
 ;*****************************************************************************
 
 ;-----------------------------------------------------------------------------
@@ -394,6 +394,7 @@ set_key_state:
 ; Handles IKBD joystick 1 packet data.
 ;-----------------------------------------------------------------------------
 ikbd_handle_joystick1_packet:
+
 	; Set the next packet handler.
 
 	lea	ikbd_handle_joystick0_packet(pc),a0
@@ -413,6 +414,7 @@ ikbd_handle_joystick1_packet:
 ; Handles IKBD joystick 0 packet data.
 ;-----------------------------------------------------------------------------
 ikbd_handle_joystick0_packet:
+
 	; Finalize the packet sequence by setting the default packet handler.
 
 	lea	determine_packet_handler(pc),a0
