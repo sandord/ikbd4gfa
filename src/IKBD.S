@@ -5,22 +5,9 @@
 ;* Author: Sandor Drie‰nhuizen.
 ;*****************************************************************************
 
-; GFA Basic usage example:
- 
-; ' The number must be replaced with the size of the IKBD4GFA.INL file.
-; ' Load the .INL file by pressing the Help key while on the INLINE keyword.
-; INLINE ikbd%,999
-; DIM reg%(15)		  !registers
-; '
-; ' The offsets to ikbd% match those mentioned in the Jump table in IKBD.S.
-; '
-; ~XBIOS(38,L:ikbd%+&H1C) !init()
-; RCALL ikbd%+&H38,reg%() !get_joystick_states()
-; PRINT reg%(0)           !print d0, which contains the joystick states
-; ~XBIOS(38,L:ikbd%+&H20) !restore()
-
 ;-----------------------------------------------------------------------------
 ; Devpac-3 options
+;-----------------------------------------------------------------------------
 
 	opt	ATARI			; TOS executable output.
 	opt	CHKPC			; Disallow non-PC addressing.
@@ -66,6 +53,7 @@ MFP_VECT_REG		equ $fffffa17   ; MFP-ST Vector Register.
 ;-----------------------------------------------------------------------------
 ; Initializes the IKBD.
 ;-----------------------------------------------------------------------------
+; You must call this routine before using the remaining routines.
 ; This routine must be called in supervisor mode.
 ;-----------------------------------------------------------------------------
 init:
@@ -156,6 +144,7 @@ init:
 ;-----------------------------------------------------------------------------
 ; Restores the IKBD.
 ;-----------------------------------------------------------------------------
+; You must call this routine before exiting your program.
 ; This routine must be called in supervisor mode.
 ;-----------------------------------------------------------------------------
 restore:
@@ -199,6 +188,8 @@ disable_mouse:
 ;-----------------------------------------------------------------------------
 ; Enables mouse reporting from the IKBD.
 ;-----------------------------------------------------------------------------
+; Call this routine at the end of your program, if you called disable_mouse
+; before.
 ; This routine must be called in supervisor mode.
 ;-----------------------------------------------------------------------------
 enable_mouse:
