@@ -34,7 +34,7 @@ To use the binary, it can be inlined in your GFA Basic program:
 INLINE ikbd%,934
 ```
 
-You can then load the `IKBD4GFA.INL` file in-line by pressing the `Help` key while the text cursor is on the `INLINE` keyword.
+You can then load the `IKBD4GFA.INL` file in-line by pressing the `Help` key while the text cursor is on the `INLINE` keyword. Click on `Load` at the top of the screen and select the `IKBD4GFA.INL` file (it is located in the `/dist` directory of this repository).
 
 Next, add the following code that makes the routine calls easier to use.
 
@@ -79,11 +79,11 @@ ENDFUNC
 
 ## Demo code
 
-The `demo` directory contains demo code for GFA Basic.
+The [demo/GFADEMO.LST](demo/GFADEMO.LST) file contains demo code for GFA Basic.
 
 > The GFA source is present as a `.LST` file because it is in ASCII format while `.GFA` files are token-based. The token-based files wouldn't be previewable outside of the GFA Basic editor and they'd also make diffs and merges practically impossible.
 
-You can load the `.LST` file into your GFA editor using the Merge option. Then you'll have to load the `IKBD4GFA.INL` file in-line. You can do this by pressing the Help key while the text cursor is on the `INLINE` keyword at the top of the source code.
+You can load the `.LST` file into your GFA editor using the Merge option. Then you'll have to load the `IKBD4GFA.INL` file in-line (see instructions above).
 
 ## Known issues
 
