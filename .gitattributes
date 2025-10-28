@@ -1,0 +1,3 @@
+# Treat .LST files as binary to prevent EOL/encoding conversions and disable diffs/whitespace-only changes.
+# This ensures that the file can be properly "merged" in the GFA Basic Editor.
+*.LST -text -diff
