@@ -8,7 +8,7 @@ This repository contains IKBD routines for keyboard and joystick handling that c
 
 ## Routines
 
-The [dist/IKBD4GFA.INL](dist/IKBD4GFA.INL) file is an Atari ST binary, assembled from the [src/IKBD.S](src/IKBD.S) source using Devpac 3.
+The [dist/IKBD4GFA.INL](dist/IKBD4GFA.INL) file is an Atari ST binary, assembled from the [src/IKBD4GFA.S](src/IKBD4GFA.S) source using Devpac 3.
 
 The following routines are available in the binary:
 
