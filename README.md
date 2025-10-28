@@ -24,17 +24,17 @@ The following routines are available in the binary:
 | `get_joystick_states`    |  +$38  | Returns joystick states for joysticks 0 and 1 with joystick 0 state in the MSB and joystick 1 state in the LSB. | `d0` (states)   |       No        |
 | `interrogate_joysticks`  |  +$3c  | Triggers joystick interrogation; states become available later and can be read with `get_joystick_states`.      | -               |       Yes       |
 
-## Usage
+## GFA Basic Usage
 
-To use the binary, it can be inlined in your GFA Basic program:
+To use the routines in GFA Basic, you should inline the [dist/IKBD4GFA.INL](dist/IKBD4GFA.INL) file in your GFA Basic program:
 
 ```basic
-' Make sure the number in the second parameter matches the size of the .INL
-' file exactly.
+' IKBD4GFA.INL. Make sure the number in the second parameter matches the size
+' of the .INL file exactly.
 INLINE ikbd%,934
 ```
 
-You can then load the `IKBD4GFA.INL` file in-line by pressing the `Help` key while the text cursor is on the `INLINE` keyword. Click on `Load` at the top of the screen and select the `IKBD4GFA.INL` file (it is located in the `/dist` directory of this repository).
+You can then load the `.INL` file in-line by pressing the `Help` key while the text cursor is on the `INLINE` keyword. Click on `Load` at the top of the screen and select the `.INL` file (it is located in the `/dist` directory of this repository).
 
 Next, add the following code that makes the routine calls easier to use.
 
