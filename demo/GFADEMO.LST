@@ -1,51 +1,53 @@
 ' IKBD4GFA.INL
-INLINE ikbd%,934
+INLINE ikbd%,888
 '
 DIM reg%(15)
 '
 init_ikbd
-' disable_mouse
+disable_mouse
 '
 ON ERROR GOSUB error_restore
 scancode_tbl%=@get_scancode_state_table
 ascii_tbl%=@get_ascii_state_table
 '
+PRINT "Please hold down keys/joystick a bit longer because the information here is"
+PRINT "updated rather slowly."
+PRINT "Press F9 to exit."
+'
 exit%=0
 WHILE exit%=0
-  VSYNC
-  VSYNC
   VSYNC
   '
   scancode%=@get_last_scancode
   joy%=@get_joystick_states
   interrogate_joysticks
   '
-  ' To print scancode state table:
-  ' a$=""
-  '  FOR i%=0 TO 127
-  '  a$=a$+CHR$(ASC("0")+PEEK(scancode_tbl%+i%))
-  ' NEXT i%
-  ' PRINT AT(1,1);a$
+  ' Print scancode state table.
+  a$="SCANCODES: "
+  FOR i%=0 TO 127
+    a$=a$+CHR$(ASC("0")+PEEK(scancode_tbl%+i%))
+  NEXT i%
+  PRINT AT(1,8);a$
   '
-  ' To print ASCII state table:
-  ' b$=""
-  ' FOR i%=0 TO 255
-  ' b$=b$+CHR$(ASC("0")+PEEK(ascii_tbl%+i%))
-  ' NEXT i%
-  ' PRINT AT(1,5);b$
+  PRINT ascii;state;table.
+  b$="ASCII: "
+  FOR i%=0 TO 255
+    b$=b$+CHR$(ASC("0")+PEEK(ascii_tbl%+i%))
+  NEXT i%
+  PRINT AT(1,12);b$
   '
-  ' To print joystick state:
-  PRINT "JOY -> ";joy%
+  ' Print joystick state.
+  PRINT AT(1,5);"JOY -> ";joy%
   '
-  ' To print last scancode:
-  PRINT "SCN -> ";scancode%
+  ' Print last scancode.
+  PRINT AT(1,6);"SCN -> ";scancode%
   '
-  IF PEEK(scancode_tbl%+68)=1 THEN
+  IF PEEK(scancode_tbl%+67)=1 THEN !F9
     exit%=1
   ENDIF
 WEND
 '
-' enable_mouse
+enable_mouse
 restore_ikbd
 '
 PROCEDURE init_ikbd

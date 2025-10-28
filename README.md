@@ -31,7 +31,7 @@ To use the routines in GFA Basic, you should inline the [dist/IKBD4GFA.INL](dist
 ```basic
 ' IKBD4GFA.INL. Make sure the number in the second parameter matches the size
 ' of the .INL file exactly.
-INLINE ikbd%,934
+INLINE ikbd%,888
 ```
 
 You can then load the `.INL` file in-line by pressing the `Help` key while the text cursor is on the `INLINE` keyword. Click on `Load` at the top of the screen and select the `.INL` file (it is located in the `/dist` directory of this repository).

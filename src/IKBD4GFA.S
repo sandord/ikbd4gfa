@@ -59,41 +59,9 @@ MFP_VECT_REG		equ $fffffa17   ; MFP-ST Vector Register.
 init:
 	movem.l	d0-d2/a0-a2,-(sp)	; Save registers.
 
-	; Initialize state.
-
-	; NOTE: strictly, clearing the state is not necessary as the state is
-	; declared using dcb.x instead of ds.x.
-
-	lea     last_scancode(pc),a0
-	clr.b	(a0)
-
-	lea	joystick0_status(pc),a0
-	clr.b   (a0)
-
-	lea	joystick1_status(pc),a0
-	clr.b   (a0)
-
-	; Clear scancode state table.
-
-	lea	kbd_scancode_state_tbl(pc),a0
-	move.w	#128/4-1,d0
-
-.clear_scancode_states:
-	clr.l	(a0)+
-	dbra.w	d0,.clear_scancode_states
-	
-	; Clear ASCII state table.
-
-	lea	kbd_ascii_state_tbl(pc),a0
-	move.w	#256/4-1,d0
-
-.clear_ascii_states:
-	clr.l	(a0)+
-	dbra.w	d0,.clear_ascii_states
-
 	bsr	flush_buffer
 
-	; Read keyboard mapping table.
+	; Get keyboard mapping table address.
 
 	pea	-1.w
 	pea	-1.w
