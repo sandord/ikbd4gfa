@@ -24,7 +24,7 @@ The following routines are available in the binary:
 | `get_joystick_states`    |  +$38  | Returns joystick states for joysticks 0 and 1 with joystick 0 state in the MSB and joystick 1 state in the LSB. | `d0` (states)   |       No        |
 | `interrogate_joysticks`  |  +$3c  | Triggers joystick interrogation; states become available later and can be read with `get_joystick_states`.      | -               |       Yes       |
 
-## GFA Basic Usage
+## Usage
 
 To use the routines in GFA Basic, you should inline the [dist/IKBD4GFA.INL](dist/IKBD4GFA.INL) file in your GFA Basic program:
 
