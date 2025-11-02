@@ -1,5 +1,5 @@
 ' IKBD4GFA.INL
-INLINE ikbd%,888
+INLINE ikbd%,890
 '
 DIM reg%(15)
 '
@@ -37,10 +37,10 @@ WHILE exit%=0
   PRINT AT(1,12);b$
   '
   ' Print joystick state.
-  PRINT AT(1,5);"JOY -> ";joy%
+  PRINT AT(1,5);"JOY -> ";joy%;"  "
   '
   ' Print last scancode.
-  PRINT AT(1,6);"SCN -> ";scancode%
+  PRINT AT(1,6);"SCN -> ";scancode%;"  "
   '
   IF PEEK(scancode_tbl%+67)=1 THEN !F9
     exit%=1
