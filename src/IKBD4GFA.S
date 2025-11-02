@@ -59,8 +59,9 @@ MFP_VECT_REG		equ $fffffa17   ; MFP-ST Vector Register.
 init:
 	movem.l	d0-d2/a0-a2,-(sp)	; Save registers.
 
-	; Reset modifier keys to prevent keys like shift getting stuck after
-	; calling restore.
+	; Reset all modifier keys to prevent TOS from thinking they're still
+	; down after calling restore.
+ 
 	move.w	#0,-(sp)		; Clear key states.
 	move.w	#$b,-(sp)		; Kbshift().
 	trap	#13
@@ -77,13 +78,19 @@ init:
 	trap	#14			; XBIOS.
 	lea	14(sp),sp		; Fix stack.
 
+	; Store the mapping table address.
+
 	move.l	d0,a0
 	lea	kbd_map_table_addr(pc),a1
 	move.l	(a0),(a1)	
 
-	; Initialize MFP.
+	; Set end-of-interrupt mode.
 
-	bclr	#3,MFP_VECT_REG.w	; Set automatic end-of-interrupt mode.
+	move.b	MFP_VECT_REG.w,d0	; Store old mode.
+	lea	mfp_old_vect_reg(pc),a0
+	move.b	d0,(a0)
+
+	bclr	#3,MFP_VECT_REG.w	; Set mode to automatic.
 
 	; Set the default packet handler.
 
@@ -137,7 +144,17 @@ restore:
 	; Enable joystick event reporting mode.
 
 	move.b	#IKBD_CMD_SET_JOYEVENTS,d0
-	bsr.s	send_command
+	bsr	send_command
+
+	; Restore end-of-interrupt mode.
+
+	lea	mfp_old_vect_reg(pc),a0
+	move.b	(a0),d0
+	and.b	#$8,d0
+	move.b	MFP_VECT_REG.w,d1
+	bclr	#3,d1
+	or.b	d0,d1
+	move.b	d1,MFP_VECT_REG.w
 
 	move.w	(sp)+,sr		; Restore status register.
 
@@ -172,7 +189,7 @@ disable_mouse:
 enable_mouse:
 	move.l	d0,-(sp)		; Save register.
 
-	move.b	#IKBD_CMD_ENABLE_MOUSE,d0 ; Enable mouse packet reporting.
+	move.b	#IKBD_CMD_ENABLE_MOUSE,d0 ; Enable relative mouse packet reporting.
 	bsr.s	send_command
 
 	move.l	(sp)+,d0		; Restore register.
@@ -458,3 +475,5 @@ last_scancode:		dcb.b	1
 
 joystick0_status:	dcb.b	1
 joystick1_status:	dcb.b	1
+
+mfp_old_vect_reg:	dcb.b	1
