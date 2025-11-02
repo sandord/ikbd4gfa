@@ -59,6 +59,13 @@ MFP_VECT_REG		equ $fffffa17   ; MFP-ST Vector Register.
 init:
 	movem.l	d0-d2/a0-a2,-(sp)	; Save registers.
 
+	; Reset modifier keys to prevent keys like shift getting stuck after
+	; calling restore.
+	move.w	#0,-(sp)		; Clear key states.
+	move.w	#$b,-(sp)		; Kbshift().
+	trap	#13
+	addq.l	#4,sp			; Fix stack.	
+
 	bsr	flush_buffer
 
 	; Get keyboard mapping table address.
