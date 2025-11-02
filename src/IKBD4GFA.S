@@ -133,6 +133,8 @@ restore:
 	bsr.s	send_command
 
 	move.w	(sp)+,sr		; Restore status register.
+
+	bsr.s	flush_buffer
 	
 	movem.l	(sp)+,d0/a0		; Restore registers.
 
