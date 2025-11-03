@@ -1,10 +1,9 @@
 ' IKBD4GFA.INL
-INLINE ikbd%,902
+INLINE ikbd%,978
 '
 DIM reg%(15)
 '
 init_ikbd
-disable_mouse
 '
 ON ERROR GOSUB error_restore
 scancode_tbl%=@get_scancode_state_table
@@ -47,7 +46,6 @@ WHILE exit%=0
   ENDIF
 WEND
 '
-enable_mouse
 restore_ikbd
 '
 PROCEDURE init_ikbd
@@ -56,31 +54,25 @@ RETURN
 PROCEDURE restore_ikbd
   ~XBIOS(38,L:ikbd%+&H20) !restore
 RETURN
-PROCEDURE disable_mouse
-  ~XBIOS(38,L:ikbd%+&H24) !disable_mouse
-RETURN
-PROCEDURE enable_mouse
-  ~XBIOS(38,L:ikbd%+&H28) !enable_mouse
-RETURN
-FUNCTION get_last_scancode
-  RCALL ikbd%+&H34,reg%()
-  RETURN reg%(0) !d0
-ENDFUNC
-PROCEDURE interrogate_joysticks
-  ~XBIOS(38,L:ikbd%+&H3C) !interrogate_joysticks
-RETURN
-FUNCTION get_joystick_states
-  RCALL ikbd%+&H38,reg%() !get_joystick_states
-  RETURN reg%(0) !d0
-ENDFUNC
 FUNCTION get_scancode_state_table
-  RCALL ikbd%+&H2C,reg%() !get_scancode_state_tbl
+  RCALL ikbd%+&H24,reg%() !get_scancode_state_tbl
   RETURN reg%(8) !a0
 ENDFUNC
 FUNCTION get_ascii_state_table
-  RCALL ikbd%+&H30,reg%() !get_ascii_state_tbl
+  RCALL ikbd%+&H28,reg%() !get_ascii_state_tbl
   RETURN reg%(8) !a0
 ENDFUNC
+FUNCTION get_last_scancode
+  RCALL ikbd%+&H2C,reg%()
+  RETURN reg%(0) !d0
+ENDFUNC
+FUNCTION get_joystick_states
+  RCALL ikbd%+&H30,reg%() !get_joystick_states
+  RETURN reg%(0) !d0
+ENDFUNC
+PROCEDURE interrogate_joysticks
+  ~XBIOS(38,L:ikbd%+&H34) !interrogate_joysticks
+RETURN
 PROCEDURE error_restore
   PRINT "ERROR ";ERR
   PRINT ERR$(ERR)

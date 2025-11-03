@@ -22,13 +22,11 @@
 
 	bra	init			; +$00 = +$1c
 	bra	restore			; +$04 = +$20
-	bra 	disable_mouse		; +$08 = +$24
-	bra	enable_mouse		; +$0c = +$28
-	bra	get_scancode_state_tbl	; +$10 = +$2c
-	bra	get_ascii_state_tbl	; +$14 = +$30
-	bra	get_last_scancode	; +$18 = +$34
-	bra	get_joystick_states	; +$2c = +$38
-	bra	interrogate_joysticks	; +$30 = +$3c
+	bra	get_scancode_state_tbl	; +$08 = +$24
+	bra	get_ascii_state_tbl	; +$0c = +$28
+	bra	get_last_scancode	; +$10 = +$2c
+	bra	get_joystick_states	; +$14 = +$30
+	bra	interrogate_joysticks	; +$18 = +$34
 
 	opt	OW+			; Re-enable optimization warnings.
 
@@ -88,6 +86,8 @@ init:
 .clear_ascii_states:
 	clr.l	(a0)+
 	dbra.w	d0,.clear_ascii_states
+
+	bsr	disable_mouse
 
 	; Reset all modifier keys to prevent TOS from thinking they're still
 	; down after calling restore.
@@ -174,7 +174,7 @@ restore:
 	; Enable joystick event reporting mode.
 
 	move.b	#IKBD_CMD_SET_JOYEVENTS,d0
-	bsr	send_command
+	bsr.s	send_command
 
 	; Restore end-of-interrupt mode.
 
@@ -189,40 +189,10 @@ restore:
 	move.w	(sp)+,sr		; Restore status register.
 
 	bsr.s	flush_buffer
+
+	bsr	enable_mouse
 	
 	movem.l	(sp)+,d0/a0		; Restore registers.
-
-	rts
-
-;-----------------------------------------------------------------------------
-; Disables mouse reporting from the IKBD, saving some cpu cycles.
-;-----------------------------------------------------------------------------
-; This routine must be called in supervisor mode.
-;-----------------------------------------------------------------------------
-disable_mouse:
-	move.l	d0,-(sp)		; Save register.
-
-	move.b	#IKBD_CMD_DISABLE_MOUSE,d0 ; Disable all mouse packet reporting.
-	bsr.s	send_command
-
-	move.l	(sp)+,d0		; Restore register.
-
-	rts
-
-;-----------------------------------------------------------------------------
-; Enables mouse reporting from the IKBD.
-;-----------------------------------------------------------------------------
-; Call this routine at the end of your program, if you called disable_mouse
-; before.
-; This routine must be called in supervisor mode.
-;-----------------------------------------------------------------------------
-enable_mouse:
-	move.l	d0,-(sp)		; Save register.
-
-	move.b	#IKBD_CMD_ENABLE_MOUSE,d0 ; Enable relative mouse packet reporting.
-	bsr.s	send_command
-
-	move.l	(sp)+,d0		; Restore register.
 
 	rts
 
@@ -481,6 +451,24 @@ ikbd_handle_joystick0_packet:
 
 	lea	joystick1_status(pc),a0
 	move.b	IKBD_ACIA_DATA.w,(a0)
+
+	rts
+
+;-----------------------------------------------------------------------------
+; Disables mouse reporting from the IKBD, saving some cpu cycles.
+;-----------------------------------------------------------------------------
+disable_mouse:
+	move.b	#IKBD_CMD_DISABLE_MOUSE,d0 ; Disable all mouse packet reporting.
+	bsr	send_command
+
+	rts
+
+;-----------------------------------------------------------------------------
+; Enables mouse reporting from the IKBD.
+;-----------------------------------------------------------------------------
+enable_mouse:
+	move.b	#IKBD_CMD_ENABLE_MOUSE,d0 ; Enable relative mouse packet reporting.
+	bsr	send_command
 
 	rts
 
