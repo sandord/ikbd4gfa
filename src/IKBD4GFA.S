@@ -2,7 +2,7 @@
 ; IKBD4GFA: IKBD routines for use in GFA basic.
 ; Handles keypresses and joystick state changes.
 ; License: Creative Commons Zero v1.0 Universal.
-; Author: Sandor Drieï¿½nhuizen.
+; Author: Sandor Drie‰nhuizen.
 ;*****************************************************************************
 
 ;-----------------------------------------------------------------------------
