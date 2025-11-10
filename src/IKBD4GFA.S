@@ -2,7 +2,7 @@
 ; IKBD4GFA: IKBD routines for use in GFA basic.
 ; Handles keypresses and joystick state changes.
 ; License: Creative Commons Zero v1.0 Universal.
-; Author: Sandor Drie‰nhuizen.
+; Author: Sandor Drieâ€°nhuizen.
 ;*****************************************************************************
 
 ;-----------------------------------------------------------------------------
@@ -477,12 +477,10 @@ enable_mouse:
 
 	even
 
-; NOTE: These variables are not declared as a BSS section because the host
-; application may not load the module as an executable but rather embed it as
-; a raw binary. In such case, BSS allocation would not applied.
-;
-; This could be optimized by dynamically allocating the required memory and
-; transforming this into a BSS section and using ds.x instead of dcb.x.
+; NOTE: These variables are not declared as a BSS section because when the
+; assembled binary is inlined using the GFA Basic Editor, it is loaded as a
+; raw file and BSS allocation is not applied. To avoid having to malloc/free
+; the required memory space, the memory is declared in-line here.
 
 ikbd_packet_handler:	dcb.l	1
 ikbd_old_handler:	dcb.l	1
