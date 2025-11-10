@@ -1,5 +1,5 @@
 ' IKBD4GFA.INL
-INLINE ikbd%,978
+INLINE ikbd%,982
 '
 DIM reg%(15)
 '

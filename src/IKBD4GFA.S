@@ -391,10 +391,11 @@ determine_packet_handler:
 ; Sets the state of a key in the scancode and ASCII state tables.
 ;-----------------------------------------------------------------------------
 ; Parameters:
-;   d0.w [scancode]
+;   d0.b [scancode]
 ;   d1.b [state] 0 (unpressed) or 1 (pressed)
 ;-----------------------------------------------------------------------------
 set_key_state:
+	and.w	#$ff,d0			; Clean excess data from register.
 
 	; Set the state in the scancode state table.
 
